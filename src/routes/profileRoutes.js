@@ -37,8 +37,8 @@ router.put('/', protect, upload.single('avatar'), async (req, res) => {
     }
 
     if (req.file) {
-      profile.avatarUrl = `/uploads/${req.file.filename}`;
-    }
+  profile.avatarUrl = req.file.path;
+}
 
     const updated = await profile.save();
     res.json(updated);
