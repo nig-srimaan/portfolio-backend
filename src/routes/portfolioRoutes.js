@@ -60,12 +60,12 @@ router.post(
       let mediaUrls = [];
 
       if (req.files?.thumbnail?.[0]) {
-        thumbnailUrl = `/uploads/${req.files.thumbnail[0].filename}`;
-      }
+  thumbnailUrl = req.files.thumbnail[0].path;
+}
 
       if (req.files?.media) {
-        mediaUrls = req.files.media.map((f) => `/uploads/${f.filename}`);
-      }
+  mediaUrls = req.files.media.map((f) => f.path);
+}
 
       const item = await PortfolioItem.create({
         title,
@@ -107,12 +107,12 @@ router.put(
       const skillsArray = typeof skills === 'string' ? JSON.parse(skills) : skills;
 
       if (req.files?.thumbnail?.[0]) {
-        item.thumbnailUrl = `/uploads/${req.files.thumbnail[0].filename}`;
-      }
+  item.thumbnailUrl = req.files.thumbnail[0].path;
+}
 
       if (req.files?.media) {
-        item.mediaUrls = req.files.media.map((f) => `/uploads/${f.filename}`);
-      }
+  item.mediaUrls = req.files.media.map((f) => f.path);
+}
 
       item.title = title || item.title;
       item.description = description || item.description;
