@@ -64,7 +64,10 @@ router.post(
 }
 
       if (req.files?.media) {
-  mediaUrls = req.files.media.map((f) => f.path);
+  mediaUrls = req.files.media.map((f) => {
+    const ext = f.originalname.split('.').pop();
+    return f.path.match(new RegExp(`\\.${ext}$`)) ? f.path : `${f.path}.${ext}`;
+  });
 }
 
       const item = await PortfolioItem.create({
@@ -111,7 +114,10 @@ router.put(
 }
 
       if (req.files?.media) {
-  item.mediaUrls = req.files.media.map((f) => f.path);
+  item.mediaUrls = req.files.media.map((f) => {
+    const ext = f.originalname.split('.').pop();
+    return f.path.match(new RegExp(`\\.${ext}$`)) ? f.path : `${f.path}.${ext}`;
+  });
 }
 
       item.title = title || item.title;
