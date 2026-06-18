@@ -165,5 +165,16 @@ router.patch('/:id/like', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
+router.patch('/:id/media', protect, async (req, res) => {
+  try {
+    const item = await PortfolioItem.findById(req.params.id);
+    if (!item) return res.status(404).json({ message: 'Item not found' });
+    const { mediaUrls } = req.body;
+    item.mediaUrls = mediaUrls;
+    const updated = await item.save();
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 export default router;
