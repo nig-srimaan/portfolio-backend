@@ -60,15 +60,16 @@ router.post(
       let mediaUrls = [];
 
       if (req.files?.thumbnail?.[0]) {
-  thumbnailUrl = req.files.thumbnail[0].path;
-}
+        thumbnailUrl = req.files.thumbnail[0].path;
+      }
 
       if (req.files?.media) {
-  mediaUrls = req.files.media.map((f) => {
-    const ext = f.originalname.split('.').pop();
-    return f.path.match(new RegExp(`\\.${ext}$`)) ? f.path : `${f.path}.${ext}`;
-  });
-}
+        mediaUrls = req.files.media.map((f) => {
+          const ext = f.originalname.split('.').pop();
+          const url = f.path.match(new RegExp(`\\.${ext}$`)) ? f.path : `${f.path}.${ext}`;
+          return `${url}||${f.originalname}`;
+        });
+      }
 
       const item = await PortfolioItem.create({
         title,
@@ -110,15 +111,16 @@ router.put(
       const skillsArray = typeof skills === 'string' ? JSON.parse(skills) : skills;
 
       if (req.files?.thumbnail?.[0]) {
-  item.thumbnailUrl = req.files.thumbnail[0].path;
-}
+        item.thumbnailUrl = req.files.thumbnail[0].path;
+      }
 
       if (req.files?.media) {
-  item.mediaUrls = req.files.media.map((f) => {
-    const ext = f.originalname.split('.').pop();
-    return f.path.match(new RegExp(`\\.${ext}$`)) ? f.path : `${f.path}.${ext}`;
-  });
-}
+        item.mediaUrls = req.files.media.map((f) => {
+          const ext = f.originalname.split('.').pop();
+          const url = f.path.match(new RegExp(`\\.${ext}$`)) ? f.path : `${f.path}.${ext}`;
+          return `${url}||${f.originalname}`;
+        });
+      }
 
       item.title = title || item.title;
       item.description = description || item.description;
