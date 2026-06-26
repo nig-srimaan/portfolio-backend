@@ -54,7 +54,7 @@ router.post(
       const { title, description, category, skills, whatILearned, externalLink, githubLink, featured } =
         req.body;
 
-      const skillsArray = typeof skills === 'string' ? JSON.parse(skills) : skills;
+      const skillsArray = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : [];
 
       let thumbnailUrl = '';
       let mediaUrls = [];
@@ -108,7 +108,7 @@ router.put(
       const { title, description, category, skills, whatILearned, externalLink, githubLink, featured } =
         req.body;
 
-      const skillsArray = typeof skills === 'string' ? JSON.parse(skills) : skills;
+      const skillsArray = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : [];
 
       if (req.files?.thumbnail?.[0]) {
         item.thumbnailUrl = req.files.thumbnail[0].path;
