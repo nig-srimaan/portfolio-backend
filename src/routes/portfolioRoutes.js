@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
       ];
     }
 
-    const items = await PortfolioItem.find(query).sort({ createdAt: -1 });
+    const items = await PortfolioItem.find(query).sort({ featured: -1, createdAt: -1 });
     res.json(items);
   } catch (error) {
     res.status(500).json({ message: error.message });
