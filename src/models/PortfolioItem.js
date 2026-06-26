@@ -4,33 +4,28 @@ const portfolioItemSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Title is required'],
       trim: true,
+      default: '',
       maxlength: [100, 'Title cannot exceed 100 characters'],
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
       trim: true,
+      default: '',
     },
     category: {
       type: String,
-      required: [true, 'Category is required'],
       enum: ['Projects', 'Internships', 'Certifications'],
       default: 'Projects',
     },
     skills: {
       type: [String],
-      required: [true, 'At least one skill is required'],
-      validate: {
-        validator: (arr) => arr.length > 0,
-        message: 'Skills array cannot be empty',
-      },
+      default: [],
     },
     whatILearned: {
       type: String,
-      required: [true, 'What I Learned field is required'],
       trim: true,
+      default: '',
     },
     mediaUrls: {
       type: [String],
