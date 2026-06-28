@@ -47,6 +47,10 @@ const portfolioItemSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    currentlyWorking: {
+    type: Boolean,
+    default: false,
+    },
     externalLink: {
       type: String,
       default: '',
