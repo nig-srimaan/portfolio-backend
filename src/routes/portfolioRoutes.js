@@ -51,7 +51,7 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      const { title, description, category, skills, whatILearned, externalLink, githubLink, featured } =
+      const { title, description, category, skills, whatILearned, externalLink, githubLink, featured, currentlyWorking } =
         req.body;
 
       const skillsArray = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : [];
@@ -82,6 +82,7 @@ router.post(
         externalLink,
         githubLink,
         featured: featured === 'true',
+        currentlyWorking: currentlyWorking === 'true',
       });
 
       res.status(201).json(item);
@@ -105,7 +106,7 @@ router.put(
         return res.status(404).json({ message: 'Portfolio item not found' });
       }
 
-      const { title, description, category, skills, whatILearned, externalLink, githubLink, featured } =
+      const { title, description, category, skills, whatILearned, externalLink, githubLink, featured, currentlyWorking } =
         req.body;
 
       const skillsArray = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : [];
@@ -130,6 +131,7 @@ router.put(
       item.externalLink = externalLink ?? item.externalLink;
       item.githubLink = githubLink ?? item.githubLink;
       item.featured = featured !== undefined ? featured === 'true' : item.featured;
+      item.currentlyWorking = currentlyWorking !== undefined ? currentlyWorking === 'true' : item.currentlyWorking;
 
       const updated = await item.save();
       res.json(updated);
@@ -165,6 +167,7 @@ router.patch('/:id/like', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 router.patch('/:id/media', protect, async (req, res) => {
   try {
     const item = await PortfolioItem.findById(req.params.id);
@@ -177,4 +180,5 @@ router.patch('/:id/media', protect, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 export default router;
