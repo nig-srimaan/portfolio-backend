@@ -2,7 +2,6 @@ import express from 'express';
 import PortfolioItem from '../models/PortfolioItem.js';
 import protect from '../middleware/authMiddleware.js';
 import upload from '../middleware/uploadMiddleware.js';
-import path from 'path';
 
 const router = express.Router();
 
@@ -51,8 +50,11 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      const { title, description, category, skills, whatILearned, externalLink, githubLink, featured, currentlyWorking } =
-        req.body;
+      const {
+        title, description, category, skills, whatILearned,
+        externalLink, githubLink, featured, currentlyWorking,
+        startDate, endDate, present,
+      } = req.body;
 
       const skillsArray = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : [];
 
@@ -83,6 +85,9 @@ router.post(
         githubLink,
         featured: featured === 'true',
         currentlyWorking: currentlyWorking === 'true',
+        startDate: startDate || '',
+        endDate: endDate || '',
+        present: present === 'true',
       });
 
       res.status(201).json(item);
@@ -106,8 +111,11 @@ router.put(
         return res.status(404).json({ message: 'Portfolio item not found' });
       }
 
-      const { title, description, category, skills, whatILearned, externalLink, githubLink, featured, currentlyWorking } =
-        req.body;
+      const {
+        title, description, category, skills, whatILearned,
+        externalLink, githubLink, featured, currentlyWorking,
+        startDate, endDate, present,
+      } = req.body;
 
       const skillsArray = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : [];
 
@@ -126,12 +134,15 @@ router.put(
       item.title = title || item.title;
       item.description = description || item.description;
       item.category = category || item.category;
-      item.skills = skillsArray || item.skills;
+      item.skills = skillsArray.length > 0 ? skillsArray : item.skills;
       item.whatILearned = whatILearned || item.whatILearned;
       item.externalLink = externalLink ?? item.externalLink;
       item.githubLink = githubLink ?? item.githubLink;
       item.featured = featured !== undefined ? featured === 'true' : item.featured;
       item.currentlyWorking = currentlyWorking !== undefined ? currentlyWorking === 'true' : item.currentlyWorking;
+      item.startDate = startDate ?? item.startDate;
+      item.endDate = endDate ?? item.endDate;
+      item.present = present !== undefined ? present === 'true' : item.present;
 
       const updated = await item.save();
       res.json(updated);
