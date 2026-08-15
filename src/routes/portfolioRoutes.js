@@ -22,8 +22,18 @@ router.get('/', async (req, res) => {
       ];
     }
 
-    const items = await PortfolioItem.find(query).sort({ featured: -1, createdAt: -1 });
-    res.json(items);
+    const categoryOrder = { Internships: 1, Projects: 2, Certifications: 3 };
+
+const items = await PortfolioItem.find(query).sort({ featured: -1, createdAt: -1 });
+
+const sorted = [...items].sort((a, b) => {
+  if (b.featured && !a.featured) return 1;
+  if (a.featured && !b.featured) return -1;
+  return (categoryOrder[a.category] || 99) - (categoryOrder[b.category] || 99);
+});
+
+res.json(sorted);
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
