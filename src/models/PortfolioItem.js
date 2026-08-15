@@ -48,8 +48,20 @@ const portfolioItemSchema = new mongoose.Schema(
       default: false,
     },
     currentlyWorking: {
-    type: Boolean,
-    default: false,
+      type: Boolean,
+      default: false,
+    },
+    startDate: {
+      type: String,
+      default: '',
+    },
+    endDate: {
+      type: String,
+      default: '',
+    },
+    present: {
+      type: Boolean,
+      default: false,
     },
     externalLink: {
       type: String,
